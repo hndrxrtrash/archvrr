@@ -4,14 +4,11 @@
 <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
     <h2>{{ file.title }}</h2>
     <h5><i>Uploaded by {{ file.name }} at {{ file.created_at.strftime('%d %B, %Y') }}
-        {% if dimas %}
-            <a href="{{ url_for('delete', id=file.id) }}"> | Delete</a>
-        {% endif %}
     </i></h5>
     {% if file.file_format == "zip" %}
     <a class="button is-dark" style="font-size: 100%" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
       Show files
-    </a><br /><br />
+    </a>
     <div class="collapse" id="collapseExample">
       <div class="well">
         {% for file in files %}
@@ -23,7 +20,11 @@
     <br />
     <br />
     {% if not file.password %}
-        <a class="button is-dark" style="font-size: 100%" href="{{ url_for('download', name=file.file_name) }}">Download {{ file.title }}.{{ file.file_format }}</a>
+      <form method="post">
+        {{ password_form.csrf_token }}
+        <br /><br />
+        <button class="button is-dark" id="download">Download  {{ file.title }}.{{ file.ext }}</button>
+      </form>
     {% else %}
         <form method="post">
             {% if error %}
@@ -34,7 +35,7 @@
             <br /><br />
             {{ password_form.csrf_token }}
             {{ password_form.password(class='dimchik', placeholder='Enter it here', type='password') }}<br /><br />
-            {{ password_form.file_id(value=file.id) }}
+            <!--{{ password_form.file_id(value=file.id) }}-->
             <button class="button is-dark" style="font-size: 100%" id="download-password">Download {{ file.title }}.{{ file.file_format }}</button>
         </form>
     {% endif %}

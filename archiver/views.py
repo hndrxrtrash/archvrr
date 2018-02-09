@@ -51,11 +51,7 @@ def index():
         db.session.commit()
         number = File.query.filter_by(title=new_file.title).count()
         new_filename = new_file.title.replace(" ", "-") + "-" + str(number)
-        response = redirect(url_for('file_view', title=new_filename))
-        response = current_app.make_response(response)
-        response.set_cookie(new_file.file_name, value='True')
-        return response
-    request.args.get('username')
+        return redirect(url_for('file_view', title=new_filename))
     if request.args.get('error') == "413":
         return render_template("index.html", form=form,
                                error="Your file is too large. File size should be no more than 500MB")
@@ -72,40 +68,21 @@ def file_view(title):
     if file_obj.file_format == "zip":
         zip_file = zipfile.ZipFile('media/ready/'+file_obj.file_name+'.zip', 'r')
         file_list = zip_file.namelist()
-    else: file_list = []
-    if request.cookies.get(file_obj.file_name) == "True":
-        user_owns_this_file = True
-    else:
-        user_owns_this_file = False
+    else: file_list = None
     form = PasswordForm()
     if form.validate_on_submit():
-        if bcrypt.check_password_hash(file_obj.password, form.password.data):
+        if not file_obj.password_hash:
+            return send_from_directory("../media", 'ready/' + file_obj.file_name + '.' + file_obj.file_format,
+                                       as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.file_format)
+        if bcrypt.check_password_hash(file_obj.password_hash, form.password.data):
             return send_from_directory('../media', 'ready/' + file_obj.file_name + '.' + file_obj.file_format,
                                        as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.file_format)
         else:
             return render_template('file.html', file=file_obj, files=file_list,
-                                   dimas=user_owns_this_file, password_form=form,
-                                   error="Password is incorrect")
+                                    password_form=form,
+                                    error="Password is incorrect")
     return render_template('file.html', file=file_obj, files=file_list,
-                           dimas=user_owns_this_file, password_form=form)
-
-
-@app.route('/download/<name>/')
-def download(name):
-    file = File.query.filter_by(file_name=name).first()
-    return send_from_directory('../media', 'ready/'+file.file_name+'.'+file.file_format,
-                               as_attachment=True,
-                               attachment_filename=file.title+'.'+file.file_format)
-
-
-@app.route('/delete/<id>/')
-def delete(id):
-    file = File.query.filter_by(id=id).first()
-    if request.cookies.get(file.file_name) == "True":
-        os.remove('media/ready/'+file.file_name+'.'+file.file_format)
-        db.session.delete(file)
-        db.session.commit()
-    return redirect('/')
+                                    password_form=form)
 
 
 def random_string():
