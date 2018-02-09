@@ -18,13 +18,9 @@
         {{ form.name(class='dimchik dimchik1', placeholder='Your name') }}<br /><br />
         {{ form.password(class='dimchik dimchik1', placeholder='Password (optional)', type='password') }}<br />
         <br />
-         <div class="file_upload">
-            <button type="button" class="btn btn-default">Choose file(s)</button>
-            <div></div>
             {{ form.files(multiple='true') }}
-         </div>
         <br />
-        <button class="button is-dark" style="font-size: 100%">Upload</button>
+        <button class="button is-dark">Upload</button>
     </form>
 </div>
 {% endblock %}
