@@ -5,6 +5,7 @@ from flask_admin import Admin
 from flask_bcrypt import Bcrypt
 import os
 
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", 'sqlite:////tmp/schema.sql')
 app.config['MAX_CONTENT_LENGTH'] = 524288000

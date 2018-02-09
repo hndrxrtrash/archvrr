@@ -4,3 +4,4 @@ flask_wtf
 flask_admin
 flask_bcrypt
 wtforms
+gunicorn
