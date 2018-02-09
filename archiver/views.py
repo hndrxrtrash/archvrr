@@ -36,14 +36,15 @@ def index():
             for file_name in file_names:
                 os.remove("media/files/"+file_name)
             new_file.title, new_file.name = title, name
-            new_file.file_format = "zip"
+            new_file.v = "zip"
             new_file.file_name = key
         else:
             new_file.title, new_file.name = title, name
             new_file.file_name = random_string()
-            new_file.file_format = form.files.raw_data[0].filename.split('.')[-1]
-            form.files.raw_data[0].save('media/ready/'+new_file.file_name+'.'+new_file.file_format)
+            new_file.ext = form.files.raw_data[0].filename.split('.')[-1]
+            form.files.raw_data[0].save('media/ready/'+new_file.file_name+'.'+new_file.ext)
         new_file.created_at = datetime.datetime.now()
+        new_file.size = os.path.getsize("media/ready/"+new_file.file_name+"."+new_file.ext)
         if form.password.data:
             password_hash = bcrypt.generate_password_hash(form.password.data)
             new_file.password = password_hash
@@ -65,18 +66,18 @@ def file_view(title):
     title_1 = title_1[:len(title_1)-1]
     try: file_obj = File.query.filter(func.lower(File.title) == func.lower(title_1)).all()[number-1]
     except IndexError: return redirect('/')
-    if file_obj.file_format == "zip":
+    if file_obj.ext == "zip":
         zip_file = zipfile.ZipFile('media/ready/'+file_obj.file_name+'.zip', 'r')
         file_list = zip_file.namelist()
     else: file_list = None
     form = PasswordForm()
     if form.validate_on_submit():
         if not file_obj.password_hash:
-            return send_from_directory("../media", 'ready/' + file_obj.file_name + '.' + file_obj.file_format,
-                                       as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.file_format)
+            return send_from_directory("../media", 'ready/' + file_obj.file_name + '.' + file_obj.ext,
+                                       as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.ext)
         if bcrypt.check_password_hash(file_obj.password_hash, form.password.data):
-            return send_from_directory('../media', 'ready/' + file_obj.file_name + '.' + file_obj.file_format,
-                                       as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.file_format)
+            return send_from_directory('../media', 'ready/' + file_obj.file_name + '.' + file_obj.ext,
+                                       as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.ext)
         else:
             return render_template('file.html', file=file_obj, files=file_list,
                                     password_form=form,
