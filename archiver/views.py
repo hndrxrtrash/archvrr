@@ -25,6 +25,7 @@ def index():
             file_names = []
             key = random_string()
             zipf = zipfile.ZipFile('media/ready/'+key + '.zip', 'w', zipfile.ZIP_DEFLATED)
+            new_file.ext = "zip"
             files_raw_data = form.files.raw_data
             for file_source in files_raw_data:
                 file_name_ = random_string()
@@ -36,7 +37,6 @@ def index():
             for file_name in file_names:
                 os.remove("media/files/"+file_name)
             new_file.title, new_file.name = title, name
-            new_file.ext = "zip"
             new_file.file_name = key
         else:
             new_file.title, new_file.name = title, name
