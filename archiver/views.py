@@ -45,9 +45,11 @@ def index():
             form.files.raw_data[0].save('media/ready/'+new_file.file_name+'.'+new_file.ext)
         new_file.created_at = datetime.datetime.now()
         new_file.size = os.path.getsize("media/ready/"+new_file.file_name+"."+new_file.ext)
-        if form.password.data:
+        if form.password.data != "":
             password_hash = bcrypt.generate_password_hash(form.password.data)
-            new_file.password = password_hash
+            new_file.password_hash = password_hash
+        else:
+            new_file.password_hash = ""
         db.session.add(new_file)
         db.session.commit()
         number = File.query.filter_by(title=new_file.title).count()
@@ -72,7 +74,7 @@ def file_view(title):
     else: file_list = None
     form = PasswordForm()
     if form.validate_on_submit():
-        if not file_obj.password_hash:
+        if file_obj.password_hash == "":
             return send_from_directory("../media", 'ready/' + file_obj.file_name + '.' + file_obj.ext,
                                        as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.ext)
         if bcrypt.check_password_hash(file_obj.password_hash, form.password.data):

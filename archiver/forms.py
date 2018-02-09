@@ -13,4 +13,4 @@ class UploadForm(FlaskForm):
 
 class PasswordForm(FlaskForm):
     password = StringField("Password", validators=[])
-    #file_id = HiddenField("File ID")
+    file_id = HiddenField("File ID")
