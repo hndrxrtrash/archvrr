@@ -19,7 +19,7 @@
     {% endif %}
     <br />
     <br />
-    {% if not file.password %}
+    {% if not file.password_hash %}
       <form method="post">
         {{ password_form.csrf_token }}
         <br />
