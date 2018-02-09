@@ -22,7 +22,7 @@
     {% if not file.password %}
       <form method="post">
         {{ password_form.csrf_token }}
-        <br /><br />
+        <br />
         <button class="button is-dark" id="download">Download  {{ file.title }}.{{ file.ext }}</button>
       </form>
     {% else %}

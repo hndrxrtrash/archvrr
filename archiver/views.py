@@ -36,7 +36,7 @@ def index():
             for file_name in file_names:
                 os.remove("media/files/"+file_name)
             new_file.title, new_file.name = title, name
-            new_file.v = "zip"
+            new_file.ext = "zip"
             new_file.file_name = key
         else:
             new_file.title, new_file.name = title, name
