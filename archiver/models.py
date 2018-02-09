@@ -8,7 +8,7 @@ class File(db.Model):
     file_format = db.Column(db.String(6))
     title = db.Column(db.String(100))
     name = db.Column(db.String(100))
-    password = db.Column(db.String(1000))
+    password = db.Column(db.String(10000))
     created_at = db.Column(db.DateTime())
 
 
