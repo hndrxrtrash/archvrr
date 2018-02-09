@@ -5,3 +5,4 @@ flask_admin
 flask_bcrypt
 wtforms
 gunicorn
+psycopg2
