@@ -4,4 +4,4 @@ li {display: inline; margin-right: 15px;}
 .dimchik::placeholder {padding-left:0;}
 .dimchik:focus {outline: none}
 .dimchik1 {font-size: 120%}
-.button {font-size: 100%;}
+button {font-size: 100%;}
