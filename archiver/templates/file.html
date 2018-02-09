@@ -5,7 +5,7 @@
     <h2>{{ file.title }}</h2>
     <h5><i>Uploaded by {{ file.name }} at {{ file.created_at.strftime('%d %B, %Y') }}
     </i></h5>
-    {% if file.file_format == "zip" %}
+    {% if file.ext == "zip" %}
     <a class="button is-dark" style="font-size: 100%" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
       Show files
     </a>
