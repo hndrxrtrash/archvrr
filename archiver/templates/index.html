@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-offset-3 col-md-6 col-sm-12 col-xs-12" id="main-form">
+    <form method="post" enctype="multipart/form-data">
+        {% if error %}
+            <article class="message" style="font-size: 100%;">
+                <div class="message-header">
+                    <p>Error</p>
+                </div>
+                <div class="message-body">
+                    <strong>{{ error }}</strong>
+                </div>
+            </article>
+        {% endif %}
+        {{ form.csrf_token }}
+        {{ form.title(class='dimchik', placeholder='Title') }}<br /><br />
+        {{ form.name(class='dimchik dimchik1', placeholder='Your name') }}<br /><br />
+        {{ form.password(class='dimchik dimchik1', placeholder='Password (optional)', type='password') }}<br />
+        <br />
+         <div class="file_upload">
+            <button type="button" class="btn btn-default">Choose file(s)</button>
+            <div></div>
+            {{ form.files(multiple='true') }}
+         </div>
+        <br />
+        <button class="button is-dark" style="font-size: 100%">Upload</button>
+    </form>
+</div>
+{% endblock %}
