@@ -92,7 +92,9 @@ def file_view(title):
 
 @app.route("/<key>/", methods=["GET", "POST"])
 def short(key):
-    file_obj = File.query.filter_by(key=key).first()
+    try:
+        file_obj = File.query.filter_by(key=key).first()
+    except: return redirect("/")
     if file_obj.ext == "zip":
         zip_file = zipfile.ZipFile('media/ready/'+file_obj.file_name+'.zip', 'r')
         file_list = zip_file.namelist()
