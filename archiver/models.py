@@ -11,6 +11,7 @@ class File(db.Model):
     password_hash = db.Column(db.String(10000))
     size = db.Column(db.Integer())
     created_at = db.Column(db.DateTime())
+    key = db.Column(db.String(13))
 
 
 admin.add_view(ModelView(File, db.session))

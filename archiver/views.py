@@ -45,6 +45,7 @@ def index():
             form.files.raw_data[0].save('media/ready/'+new_file.file_name+'.'+new_file.ext)
         new_file.created_at = datetime.datetime.now()
         new_file.size = os.path.getsize("media/ready/"+new_file.file_name+"."+new_file.ext)
+        new_file.key = random_string()
         if form.password.data != "":
             password_hash = bcrypt.generate_password_hash(form.password.data)
             new_file.password_hash = password_hash
@@ -72,6 +73,7 @@ def file_view(title):
         zip_file = zipfile.ZipFile('media/ready/'+file_obj.file_name+'.zip', 'r')
         file_list = zip_file.namelist()
     else: file_list = None
+    file_size = human_readable_size(file_obj.size)
     form = PasswordForm()
     if form.validate_on_submit():
         if file_obj.password_hash == "":
@@ -82,10 +84,10 @@ def file_view(title):
                                        as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.ext)
         else:
             return render_template('file.html', file=file_obj, files=file_list,
-                                    password_form=form,
+                                    password_form=form, size=file_size
                                     error="Password is incorrect")
     return render_template('file.html', file=file_obj, files=file_list,
-                                    password_form=form)
+                                    password_form=form, size=file_size)
 
 
 def random_string():
@@ -93,4 +95,15 @@ def random_string():
     string = ""
     for i in range(10):
         string += chars[randint(0, len(chars)-1)]
+    return string
+
+def human_readable_size(memory):
+    if memory > 1024 * 1024 * 1024:
+        string = "{0:.2f}GB".format(memory / (1024 * 1024 * 1024))
+    elif memory > 1024 * 1024:
+        string = "{0:.2f}MB".format(memory / (1024 * 1024))
+    elif memory > 1024:
+        string = "{0:.2f}KB".format(memory / 1024)
+    else:
+        string = "0GB"
     return string
