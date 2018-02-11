@@ -90,7 +90,7 @@ def file_view(title):
                                     password_form=form, size=file_size, short=True)
 
 
-@app.route("/<key>/")
+@app.route("/<key>/", methods=["GET", "POST"])
 def short(key):
     file_obj = File.query.filter_by(key=key).first()
     if file_obj.ext == "zip":
