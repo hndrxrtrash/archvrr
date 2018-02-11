@@ -139,4 +139,4 @@ def get_long_link(fileObj):
     for i, f in enumerate(File.query.filter_by(title=fileObj.title).all()):
         if f.id == fileObj.id:
             break
-    return title.replace(" ", "-") + "-" + str(i+1)
+    return fileObj.title.replace(" ", "-") + "-" + str(i+1)
