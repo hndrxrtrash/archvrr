@@ -90,6 +90,31 @@ def file_view(title):
                                     password_form=form, size=file_size, short=True)
 
 
+@app.route("/<key>/")
+def short(key):
+    file_obj = File.query.filter_by(key=key).first()
+    if file_obj.ext == "zip":
+        zip_file = zipfile.ZipFile('media/ready/'+file_obj.file_name+'.zip', 'r')
+        file_list = zip_file.namelist()
+    else: file_list = None
+    file_size = human_readable_size(file_obj.size)
+    form = PasswordForm()
+    if form.validate_on_submit():
+        if file_obj.password_hash == "":
+            return send_from_directory("../media", 'ready/' + file_obj.file_name + '.' + file_obj.ext,
+                                       as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.ext)
+        if bcrypt.check_password_hash(file_obj.password_hash, form.password.data):
+            return send_from_directory('../media', 'ready/' + file_obj.file_name + '.' + file_obj.ext,
+                                       as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.ext)
+        else:
+            return render_template('file.html', file=file_obj, files=file_list,
+                                    password_form=form, size=file_size,
+                                    error="Password is incorrect", short=True)
+    return render_template('file.html', file=file_obj, files=file_list,
+                                    password_form=form, size=file_size, short=True)
+
+
+
 def random_string():
     chars = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890"
     string = ""

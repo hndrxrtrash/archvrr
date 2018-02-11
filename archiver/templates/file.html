@@ -10,7 +10,7 @@
     {% if short %}
       <i>Short link: /{{ file.key }}</i><br />
     {% endif %}
-    {% if file.ext == "zip" %}
+    {% if file.ext == "zip" and not file.password_hash %}<br />
     <a class="button is-dark" style="font-size: 100%" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
       Show files
     </a><br /><br />
