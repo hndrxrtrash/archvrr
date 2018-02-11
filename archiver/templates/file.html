@@ -7,9 +7,9 @@
     </i></h5>
     <i>Size: {{ file_size }}</i>
     <i>Format: {{ file.ext }}</i>
-    {{ if short }}
+    {% if short %}
       <i>Short link: /{{ file.key }}</i>
-    {{ endif }}
+    {% endif %}
     {% if file.ext == "zip" %}
     <a class="button is-dark" style="font-size: 100%" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
       Show files
