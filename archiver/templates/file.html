@@ -7,7 +7,7 @@
     </i></h5>
     <i>Size: {{ file_size }}</i>
     <i>Format: {{ file.ext }}</i>
-    {{ if not short }}
+    {{ if short }}
       <i>Short link: /{{ file.key }}</i>
     {{ endif }}
     {% if file.ext == "zip" %}

@@ -85,9 +85,9 @@ def file_view(title):
         else:
             return render_template('file.html', file=file_obj, files=file_list,
                                     password_form=form, size=file_size,
-                                    error="Password is incorrect")
+                                    error="Password is incorrect", short=True)
     return render_template('file.html', file=file_obj, files=file_list,
-                                    password_form=form, size=file_size)
+                                    password_form=form, size=file_size, short=True)
 
 
 def random_string():
