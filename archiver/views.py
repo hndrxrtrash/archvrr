@@ -84,7 +84,7 @@ def file_view(title):
                                        as_attachment=True, attachment_filename=file_obj.title+'.'+file_obj.ext)
         else:
             return render_template('file.html', file=file_obj, files=file_list,
-                                    password_form=form, size=file_size
+                                    password_form=form, size=file_size,
                                     error="Password is incorrect")
     return render_template('file.html', file=file_obj, files=file_list,
                                     password_form=form, size=file_size)
