@@ -10,7 +10,7 @@
     {% if short %}
       <i>Short link: <a href="{{ url_for('short', key=file.key) }}">archvrr.herokuapp.com/{{ file.key }}</a></i><br />
     {% else %}
-      <i>Long link: <a href="{{ url_for('file_view', title=link) }}">archvrr.herokuapp.com/{{ link }}</i><br />
+      <i>Long link: <a href="{{ url_for('file_view', title=link) }}">archvrr.herokuapp.com/{{ link }}</a></i><br />
     {% endif %}
     {% if file.ext == "zip" and not file.password_hash %}<br />
     <a class="button is-dark" style="font-size: 100%" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
