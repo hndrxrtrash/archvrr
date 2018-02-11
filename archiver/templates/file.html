@@ -38,7 +38,7 @@
             {{ password_form.file_id(value=file.id) }}
             {{ password_form.password(class='dimchik', placeholder='Enter it here', type='password') }}<br /><br />
             <!--{{ password_form.file_id(value=file.id) }}-->
-            <button class="button is-dark" style="font-size: 100%" id="download-password">Download {{ file.title }}.{{ file.file_format }}</button>
+            <button class="button is-dark" style="font-size: 100%" id="download-password">Download {{ file.title }}.{{ file.ext }}</button>
         </form>
     {% endif %}
 </div>
