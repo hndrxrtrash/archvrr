@@ -45,7 +45,7 @@ def index():
             form.files.raw_data[0].save('media/ready/'+new_file.file_name+'.'+new_file.ext)
         new_file.created_at = datetime.datetime.now()
         new_file.size = os.path.getsize("media/ready/"+new_file.file_name+"."+new_file.ext)
-        new_file.key = random_string()
+        new_file.key = random_string()[:6]
         if form.password.data != "":
             password_hash = bcrypt.generate_password_hash(form.password.data)
             new_file.password_hash = password_hash
@@ -109,9 +109,11 @@ def short(key):
         else:
             return render_template('file.html', file=file_obj, files=file_list,
                                     password_form=form, size=file_size,
-                                    error="Password is incorrect", short=True)
+                                    link=get_long_link(file_obj),
+                                    error="Password is incorrect", short=False)
     return render_template('file.html', file=file_obj, files=file_list,
-                                    password_form=form, size=file_size, short=True)
+                                    password_form=form, size=file_size, short=False,
+                                    link=get_long_link(file_obj))
 
 
 
@@ -132,3 +134,9 @@ def human_readable_size(memory):
     else:
         string = "0GB"
     return string
+
+def get_long_link(fileObj):
+    for i, f in enumerate(File.query.filter_by(title=fileObj.title).all()):
+        if f.id == fileObj.id:
+            break
+    return title.replace(" ", "-") + "-" + str(i+1)
